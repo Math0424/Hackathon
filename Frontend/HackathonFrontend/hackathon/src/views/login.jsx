@@ -1,4 +1,5 @@
 import { useState } from "react";
+import {useNavigate} from 'react-router-dom';
 
 const loginValidates = (username, password) => {
     return true;
@@ -7,9 +8,10 @@ const loginValidates = (username, password) => {
 const Login = () => {
     const [username, setusername] = useState("");
     const [password, setpassword] = useState("");
+    const navigate = useNavigate();
     const handleSubmit = (e) => {
         if(loginValidates(username, password)) {
-
+            navigate('/Cow');
         }
     };
     return (
