@@ -10,10 +10,11 @@ namespace HackathonBackend.src
     {
         enum NoteCategory
         {
-            Defects,
-            History,
-            Information,
-            Behavior,
+            Defects = 0,
+            History = 1,
+            Information = 2,
+            Behavior = 3,
+            Breeding = 4,
         }
 
         struct User
@@ -50,11 +51,26 @@ namespace HackathonBackend.src
 
             DateTime inseminationDate;
             DateTime birthedDate;
-            float birthWeight;
             bool stillborn;
 
             ulong cow;
             ulong bull;
+        }
+
+        struct BovineWeight
+        {
+            ulong bovineId;
+
+            DateTime date;
+            float weight;
+        }
+
+        struct BovinePhotos
+        {
+            ulong bonvineId;
+
+            DateTime dateTaken;
+            string filePath;
         }
 
         struct BovineNotes
