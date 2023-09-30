@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "99ded712-6124-4166-a88a-4e27333dca63": {
+      "ProjectGuid": "99ded712-6124-4166-a88a-4e27333dca63",
+      "DisplayName": "HackathonBackend",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}
