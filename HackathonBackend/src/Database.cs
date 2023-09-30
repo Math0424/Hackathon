@@ -200,8 +200,8 @@ namespace HackathonBackend.src
                         bovine.male = (bool)reader["male"];
                         bovine.father = (ulong)reader["father"];
                         bovine.mother = (ulong)reader["mother"];
-                        bovine.birth = new DateTime((long)reader["birth"]);
-                        bovine.death = new DateTime((long)reader["death"]);
+                        bovine.birth = (long)reader["birth"];
+                        bovine.death = (long)reader["death"];
                         bovine.cull = (bool)reader["cull"];
                         bovine.culled = (bool)reader["culled"];
                         bovine.casterated = (bool)reader["casterated"];
@@ -226,7 +226,7 @@ namespace HackathonBackend.src
                         {
                             bovineId = (ulong)reader["bovineId"],
                             category = (int)reader["category"],
-                            creation = new DateTime((long)reader["creation"]),
+                            creation = (long)reader["creation"],
                             title = reader["title"].ToString(),
                             message = reader["message"].ToString()
                         };
@@ -251,7 +251,7 @@ namespace HackathonBackend.src
                         BovinePhotos photo = new BovinePhotos
                         {
                             bovineId = (ulong)reader["bovineId"],
-                            dateTaken = new DateTime((long)reader["dateTaken"]),
+                            dateTaken = (long)reader["dateTaken"],
                             filePath = reader["filePath"].ToString()
                         };
                         photos.Add(photo);
@@ -275,7 +275,7 @@ namespace HackathonBackend.src
                         BovineWeight weight = new BovineWeight
                         {
                             bovineId = (ulong)reader["bovineId"],
-                            date = new DateTime((long)reader["date"]),
+                            date = (long)reader["date"],
                             weight = (float)reader["weight"]
                         };
                         weights.Add(weight);
@@ -297,8 +297,8 @@ namespace HackathonBackend.src
                     if (reader.Read())
                     {
                         conception.bovineId = (ulong)reader["bovineId"];
-                        conception.inseminationDate = new DateTime((long)reader["inseminationDate"]);
-                        conception.birthedDate = new DateTime((long)reader["birthedDate"]);
+                        conception.inseminationDate =(long)reader["inseminationDate"];
+                        conception.birthedDate = (long)reader["birthedDate"];
                         conception.stillborn = (bool)reader["stillborn"];
                         conception.cow = (ulong)reader["cow"];
                         conception.bull = (ulong)reader["bull"];
@@ -322,8 +322,8 @@ namespace HackathonBackend.src
                         BreedingHistory birth = new BreedingHistory
                         {
                             bovineId = (ulong)reader["bovineId"],
-                            inseminationDate = new DateTime((long)reader["inseminationDate"]),
-                            birthedDate = new DateTime((long)reader["birthedDate"]),
+                            inseminationDate = (long)reader["inseminationDate"],
+                            birthedDate = (long)reader["birthedDate"],
                             stillborn = (bool)reader["stillborn"],
                             cow = (ulong)reader["cow"],
                             bull = (ulong)reader["bull"]
