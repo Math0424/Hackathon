@@ -18,6 +18,8 @@ namespace HackathonBackend.src
         {
             databaseLocation = databaseLocation.Replace("%appdata%", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
 
+            Console.WriteLine($"Database located at {databaseLocation}");
+
             if (!File.Exists(databaseLocation))
             {
                 SQLiteConnection.CreateFile(databaseLocation);
