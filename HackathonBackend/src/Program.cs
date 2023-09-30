@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -19,24 +20,6 @@ namespace HackathonBackend.src
     internal class Program
     {
         private static SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("BovineFarmingIsForYouAndMe"));
-
-        public static string GenerateSalt()
-        {
-            byte[] salt = new byte[16];
-            RandomNumberGenerator.Fill(salt);
-            return Convert.ToBase64String(salt);
-        }
-
-        public static string HashPassword(string password, string salt)
-        {
-            using (var sha256 = SHA256.Create())
-            {
-                var saltedPassword = password + salt;
-                byte[] saltedPasswordBytes = Encoding.UTF8.GetBytes(saltedPassword);
-                byte[] hashBytes = sha256.ComputeHash(saltedPasswordBytes);
-                return Convert.ToBase64String(hashBytes);
-            }
-        }
 
         private static string GenerateUserToken(User user)
         {
@@ -56,11 +39,14 @@ namespace HackathonBackend.src
             return token;
         }
 
-
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
+
+            builder.Services.AddControllers();
             builder.Services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -80,9 +66,11 @@ namespace HackathonBackend.src
             builder.Services.AddAuthorization();
 
             var app = builder.Build();
-
+            
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.MapControllers();
 
             app.MapPost("/authenticate", async (User user) =>
             {
@@ -92,14 +80,20 @@ namespace HackathonBackend.src
                     return Results.NotFound("User not found");
                 }
 
-                if (HashPassword(user.password, userDb.Value.salt).Equals(userDb.Value.encriptedPassword))
+                if (Utils.HashPassword(user.password, userDb.Value.salt).Equals(userDb.Value.encriptedPassword))
                 {
                     return Results.Unauthorized();
                 }
 
                 return Results.Ok(GenerateUserToken(user));
             });
-            
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+
             app.Run();
         }
 

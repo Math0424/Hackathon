@@ -47,3 +47,7 @@ C:\Users\Math0424\Desktop\Hackathon\HackathonBackend\obj\Debug\net6.0\HackathonB
 C:\Users\Math0424\Desktop\Hackathon\HackathonBackend\obj\Debug\net6.0\ref\HackathonBackend.dll
 C:\Users\Math0424\Desktop\Hackathon\HackathonBackend\obj\Debug\net6.0\HackathonBackend.pdb
 C:\Users\Math0424\Desktop\Hackathon\HackathonBackend\obj\Debug\net6.0\HackathonBackend.genruntimeconfig.cache
+C:\Users\Math0424\Desktop\Hackathon\HackathonBackend\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\Users\Math0424\Desktop\Hackathon\HackathonBackend\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\Math0424\Desktop\Hackathon\HackathonBackend\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\Math0424\Desktop\Hackathon\HackathonBackend\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll

@@ -142,6 +142,20 @@ namespace HackathonBackend.src
             }
         }
 
+        public async static Task CreateUser(User user)
+        {
+            ulong uniqueId = BitConverter.ToUInt64(Guid.NewGuid().ToByteArray(), 0);
+            user.id = uniqueId;
+            user.lastLogin = DateTime.Now.Ticks;
+            user.salt = Utils.GenerateSalt();
+            user.encriptedPassword = Utils.HashPassword(user.password, user.salt);
+            using (var command = new SQLiteCommand(connection))
+            {
+                command.CommandText = GenerateInsertStatement(user, command, "User");
+                await command.ExecuteNonQueryAsync();
+            }
+        }
+
         // SQL getters
         public async static Task<User?> GetUser(string username)
         {
@@ -165,6 +179,23 @@ namespace HackathonBackend.src
                 }
             }
             return null;
+        }
+
+        public async static Task<List<ulong>> GetUsers()
+        {
+            string sql = $"SELECT id FROM User";
+            List<ulong> users = new List<ulong>();
+            using (var command = new SQLiteCommand(sql, connection))
+            {
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    while (reader.Read())
+                    {
+                        users.Add((ulong)reader["id"]);
+                    }
+                }
+            }
+            return users;
         }
 
         public async static Task<List<ulong>> GetUserBovineIds(ulong id)
