@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "V9GMQ1cN+8bYB7YeE18+jq/ynJOmyFTqMbZ+s/9g9ZT8y7RbN18K6eu3rK8l41B8d8cYYmnxlbgUiq2WGX5YVg==",
+  "dgSpecHash": "wvKubGgSROAcmjEFhIolSyX5pcgJ5BscfbhEEYOHHHtzHKKNk97qjWSwpJvduIEAw8zqnJMOqv2tqRg/9rULFw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Math0424\\Desktop\\Hackathon\\HackathonBackend\\HackathonBackend.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Math0424\\.nuget\\packages\\microsoft.data.sqlite.core\\7.0.11\\microsoft.data.sqlite.core.7.0.11.nupkg.sha512",
+    "C:\\Users\\Math0424\\.nuget\\packages\\sqlitepclraw.core\\2.1.4\\sqlitepclraw.core.2.1.4.nupkg.sha512",
+    "C:\\Users\\Math0424\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512"
+  ],
   "logs": []
 }
