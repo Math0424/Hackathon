@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace HackathonBackend.src
 {
+    public class SQLIgnore : Attribute { }
+
     internal static class Utils
     {
 

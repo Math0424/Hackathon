@@ -4,7 +4,6 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static HackathonBackend.src.Structs;
 
 namespace HackathonBackend.src
 {
@@ -18,12 +17,13 @@ namespace HackathonBackend.src
         {
             databaseLocation = databaseLocation.Replace("%appdata%", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
 
-            Console.WriteLine($"Database located at {databaseLocation}");
-
             if (!File.Exists(databaseLocation))
             {
+                Directory.CreateDirectory(Path.GetDirectoryName(databaseLocation));
                 SQLiteConnection.CreateFile(databaseLocation);
             }
+
+            Console.WriteLine($"Database located at {databaseLocation}");
 
             connection = new SQLiteConnection($"Data Source={databaseLocation};Version=3;");
             connection.Open();
@@ -157,9 +157,18 @@ namespace HackathonBackend.src
         }
 
         // SQL getters
+        public async static Task<bool> HasUser(string username)
+        {
+            string sql = $"SELECT COUNT(*) FROM User WHERE username COLLATE NOCASE = \"{username}\"";
+            using (var command = new SQLiteCommand(sql, connection))
+            {
+                return Convert.ToInt32(await command.ExecuteScalarAsync()) > 0;
+            }
+        }
+
         public async static Task<User?> GetUser(string username)
         {
-            string sql = $"SELECT * FROM User WHERE username = {username}";
+            string sql = $"SELECT * FROM User WHERE username COLLATE NOCASE = \"{username}\"";
             using (var command = new SQLiteCommand(sql, connection))
             {
                 using (var reader = await command.ExecuteReaderAsync())
@@ -243,7 +252,6 @@ namespace HackathonBackend.src
 
         public async static Task<Bovine?> GetBovine(ulong id)
         {
-            Bovine bovine;
             string sql = $"SELECT * FROM Bovine WHERE id = {id}";
             using (var command = new SQLiteCommand(sql, connection))
             {
@@ -251,17 +259,20 @@ namespace HackathonBackend.src
                 {
                     while (reader.Read())
                     {
-                        bovine.id = (ulong)reader["id"];
-                        bovine.ownerId = (ulong)reader["ownerId"];
-                        bovine.name = reader["name"].ToString();
-                        bovine.male = (bool)reader["male"];
-                        bovine.father = (ulong)reader["father"];
-                        bovine.mother = (ulong)reader["mother"];
-                        bovine.birth = (long)reader["birth"];
-                        bovine.death = (long)reader["death"];
-                        bovine.cull = (bool)reader["cull"];
-                        bovine.culled = (bool)reader["culled"];
-                        bovine.casterated = (bool)reader["casterated"];
+                        return new Bovine()
+                        {
+                            id = (ulong)reader["id"],
+                            ownerId = (ulong)reader["ownerId"],
+                            name = reader["name"].ToString(),
+                            male = (bool)reader["male"],
+                            father = (ulong)reader["father"],
+                            mother = (ulong)reader["mother"],
+                            birth = (long)reader["birth"],
+                            death = (long)reader["death"],
+                            cull = (bool)reader["cull"],
+                            culled = (bool)reader["culled"],
+                            casterated = (bool)reader["casterated"]
+                        };
                     }
                 }
             }

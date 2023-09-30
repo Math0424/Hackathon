@@ -13,7 +13,6 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using static HackathonBackend.src.Structs;
 
 namespace HackathonBackend.src
 {
@@ -66,7 +65,8 @@ namespace HackathonBackend.src
             builder.Services.AddAuthorization();
 
             var app = builder.Build();
-            
+
+            app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -75,7 +75,7 @@ namespace HackathonBackend.src
             app.MapPost("/authenticate", async (User user) =>
             {
                 var userDb = await Database.GetUser(user.username);
-                if (!userDb.HasValue)
+                if (userDb == null)
                 {
                     return Results.NotFound("User not found");
                 }

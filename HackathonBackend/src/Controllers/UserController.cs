@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static HackathonBackend.src.Structs;
 
 namespace HackathonBackend.src
 {
@@ -16,17 +15,19 @@ namespace HackathonBackend.src
     {
 
         [HttpPost("create")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateUser(User user)
         {
-            var userDb = await Database.GetUser(user.username);
-            if (userDb.HasValue)
+            if (await Database.HasUser(user.username))
             {
-                return Conflict("User already exsists");
+                return Conflict("User already in database");
             }
 
-            if (user.password == null || user.password.Length < 5)
+            if (user.password == null || user.password.Length <= 5)
             {
-                return BadRequest("Invalid password");
+                return BadRequest($"Invalid password '{user.username}' '{user.password}'");
             }
 
             await Database.CreateUser(user);
