@@ -23,6 +23,10 @@ namespace HackathonBackend.src
         {
             public ulong id;
             public string username;
+            
+            [SQLIgnore]
+            public string password;
+            
             public string encriptedPassword;
             public string salt;
             public long lastLogin;

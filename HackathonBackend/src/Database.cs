@@ -141,6 +141,30 @@ namespace HackathonBackend.src
         }
 
         // SQL getters
+        public async static Task<User?> GetUser(string username)
+        {
+            string sql = $"SELECT * FROM User WHERE username = {username}";
+            using (var command = new SQLiteCommand(sql, connection))
+            {
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    while (reader.Read())
+                    {
+                        User user = new User
+                        {
+                            id = (ulong)reader["id"],
+                            username = reader["username"].ToString(),
+                            encriptedPassword = reader["encriptedPassword"].ToString(),
+                            salt = reader["salt"].ToString(),
+                            lastLogin = (long)reader["lastLogin"],
+                        };
+                        return user;
+                    }
+                }
+            }
+            return null;
+        }
+
         public async static Task<List<ulong>> GetUserBovineIds(ulong id)
         {
             List<ulong> bovineIds = new List<ulong>();
