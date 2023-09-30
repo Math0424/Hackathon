@@ -8,7 +8,9 @@ namespace HackathonBackend.src
 {
     internal class Structs
     {
-        enum NoteCategory
+        public class SQLIgnore : Attribute { }
+
+        public enum NoteCategory
         {
             Defects = 0,
             History = 1,
@@ -17,70 +19,70 @@ namespace HackathonBackend.src
             Breeding = 4,
         }
 
-        struct User
+        public struct User
         {
-            ulong id;
-            string username;
-            string encriptedPassword;
-            string salt;
-            DateTime lastLogin;
+            public ulong id;
+            public string username;
+            public string encriptedPassword;
+            public string salt;
+            public DateTime lastLogin;
         }
 
-        struct Bovine
+        public struct Bovine
         {
-            ulong id;
-            ulong ownerId;
+            public ulong id;
+            public ulong ownerId;
 
-            string name;
-            bool male;
+            public string name;
+            public bool male;
 
-            ulong father;
-            ulong mother;
+            public ulong father;
+            public ulong mother;
 
-            DateTime birth;
-            DateTime death;
+            public DateTime birth;
+            public DateTime death;
 
-            bool cull;
-            bool culled;
-            bool casterated;
+            public bool cull;
+            public bool culled;
+            public bool casterated;
         }
 
-        struct BreedingHistory
+        public struct BreedingHistory
         {
-            ulong bovineId;
+            public ulong bovineId;
 
-            DateTime inseminationDate;
-            DateTime birthedDate;
-            bool stillborn;
+            public DateTime inseminationDate;
+            public DateTime birthedDate;
+            public bool stillborn;
 
-            ulong cow;
-            ulong bull;
+            public ulong cow;
+            public ulong bull;
         }
 
-        struct BovineWeight
+        public struct BovineWeight
         {
-            ulong bovineId;
+            public ulong bovineId;
 
-            DateTime date;
-            float weight;
+            public DateTime date;
+            public float weight;
         }
 
-        struct BovinePhotos
+        public struct BovinePhotos
         {
-            ulong bonvineId;
+            public ulong bovineId;
 
-            DateTime dateTaken;
-            string filePath;
+            public DateTime dateTaken;
+            public string filePath;
         }
 
-        struct BovineNotes
+        public struct BovineNotes
         {
-            ulong bovineId;
+            public ulong bovineId;
 
-            int category;
-            DateTime creation;
-            string title;
-            string message;
+            public int category;
+            public DateTime creation;
+            public string title;
+            public string message;
         }
 
     }
