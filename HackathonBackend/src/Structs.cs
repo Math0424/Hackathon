@@ -25,7 +25,7 @@ namespace HackathonBackend.src
             public string username;
             public string encriptedPassword;
             public string salt;
-            public DateTime lastLogin;
+            public long lastLogin;
         }
 
         public struct Bovine
@@ -33,14 +33,16 @@ namespace HackathonBackend.src
             public ulong id;
             public ulong ownerId;
 
+            public long registered;
+
             public string name;
             public bool male;
 
             public ulong father;
             public ulong mother;
 
-            public DateTime birth;
-            public DateTime death;
+            public long birth;
+            public long death;
 
             public bool cull;
             public bool culled;
@@ -51,8 +53,9 @@ namespace HackathonBackend.src
         {
             public ulong bovineId;
 
-            public DateTime inseminationDate;
-            public DateTime birthedDate;
+            public long inseminationDate;
+            public long birthedDate;
+
             public bool stillborn;
 
             public ulong cow;
@@ -63,7 +66,7 @@ namespace HackathonBackend.src
         {
             public ulong bovineId;
 
-            public DateTime date;
+            public long date;
             public float weight;
         }
 
@@ -71,7 +74,7 @@ namespace HackathonBackend.src
         {
             public ulong bovineId;
 
-            public DateTime dateTaken;
+            public long dateTaken;
             public string filePath;
         }
 
@@ -80,7 +83,8 @@ namespace HackathonBackend.src
             public ulong bovineId;
 
             public int category;
-            public DateTime creation;
+            public long creation;
+
             public string title;
             public string message;
         }
