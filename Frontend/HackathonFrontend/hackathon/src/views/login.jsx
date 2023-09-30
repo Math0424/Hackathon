@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 const loginValidates = (username, password) => {
-
+    return true;
 }
 
 const Login = () => {
