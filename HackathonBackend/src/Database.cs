@@ -39,7 +39,8 @@ namespace HackathonBackend.src
             sql = @"
                 CREATE TABLE IF NOT EXISTS Bovine (
                     id INTEGER PRIMARY KEY,
-                    ownerId INTEGER,
+                    ownerId INTEGER REFERENCES User(id),
+                    registered INTEGER,
                     name TEXT,
                     male BOOLEAN,
                     father INTEGER,
@@ -104,6 +105,42 @@ namespace HackathonBackend.src
             return sql;
         }
         
+        //SQL setters
+        public async static Task<ulong> CreateCow(ulong ownerId, Bovine bovine)
+        {
+            ulong uniqueId = BitConverter.ToUInt64(Guid.NewGuid().ToByteArray(), 0);
+            bovine.registered = DateTime.Now.Ticks;
+            bovine.id = uniqueId;
+            bovine.ownerId = ownerId;
+            using (var command = new SQLiteCommand(connection))
+            {
+                command.CommandText = GenerateInsertStatement(bovine, command, "Bovine");
+                await command.ExecuteNonQueryAsync();
+            }
+            return bovine.id;
+        }
+
+        public async static Task CreateNote(BovineNotes note)
+        {
+            note.creation = DateTime.Now.Ticks;
+            using (var command = new SQLiteCommand(connection))
+            {
+                command.CommandText = GenerateInsertStatement(note, command, "BovineNotes");
+                await command.ExecuteNonQueryAsync();
+            }
+        }
+
+        public async static Task AddWeight(BovineWeight weight)
+        {
+            weight.date = DateTime.Now.Ticks;
+            using (var command = new SQLiteCommand(connection))
+            {
+                command.CommandText = GenerateInsertStatement(weight, command, "BovineWeight");
+                await command.ExecuteNonQueryAsync();
+            }
+        }
+
+        // SQL getters
         public async static Task<List<ulong>> GetUserBovineIds(ulong id)
         {
             List<ulong> bovineIds = new List<ulong>();
