@@ -3,27 +3,32 @@ import {useNavigate} from 'react-router-dom';
 import Cookies from 'js-cookie';
 
 const loginValidates = async (user, pass) => {
-    const response = await fetch('http://173.215.25.174:5000/user/auth', {
-        method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        redirect: "follow",
-        referrerPolicy: "no-referrer",
-        body: JSON.stringify({
-            username: user,
-            password: pass
-        })
-    });
+    try {
+        const response = await fetch('http://173.215.25.174:5000/user/auth', {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            redirect: "follow",
+            referrerPolicy: "no-referrer",
+            body: JSON.stringify({
+                username: user,
+                password: pass
+            })
+        });
 
-    return response.json();
+        return response.json();
+    } catch (e) {
+        return [undefined];
+    }
 }
 
 const Login = () => {
     const [username, setusername] = useState("");
     const [password, setpassword] = useState("");
+    const [isErrorLoggingIn, setIsLogInError] = useState(false);
     const navigate = useNavigate();
     const handleSubmit = async () => {
         const response = await loginValidates(username, password)
@@ -32,6 +37,8 @@ const Login = () => {
             Cookies.set('userId', response[0])
 
             navigate('/Cow');
+        } else {
+            setIsLogInError(true);
         }
     };
 
@@ -53,6 +60,7 @@ const Login = () => {
             />
             <input type="submit" onClick={handleSubmit} value="Submit" />
             <input type="button" value="Create Account" />
+            {isErrorLoggingIn && <p>Error logging in</p>}
         </div>
     )
 }
