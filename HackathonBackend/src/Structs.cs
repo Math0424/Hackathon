@@ -19,7 +19,7 @@ namespace HackathonBackend.src
 
     public struct User
     {
-        public ulong id;
+        public long id;
         public string username;
             
         [SQLIgnore]
@@ -32,16 +32,16 @@ namespace HackathonBackend.src
 
     public struct Bovine
     {
-        public ulong id;
-        public ulong ownerId;
+        public long id;
+        public long ownerId;
 
         public long registered;
 
         public string name;
         public bool male;
 
-        public ulong father;
-        public ulong mother;
+        public long father;
+        public long mother;
 
         public long birth;
         public long death;
@@ -53,20 +53,20 @@ namespace HackathonBackend.src
 
     public struct BreedingHistory
     {
-        public ulong bovineId;
+        public long bovineId;
 
         public long inseminationDate;
         public long birthedDate;
 
         public bool stillborn;
 
-        public ulong cow;
-        public ulong bull;
+        public long cow;
+        public long bull;
     }
 
     public struct BovineWeight
     {
-        public ulong bovineId;
+        public long bovineId;
 
         public long date;
         public float weight;
@@ -74,7 +74,7 @@ namespace HackathonBackend.src
 
     public struct BovinePhotos
     {
-        public ulong bovineId;
+        public long bovineId;
 
         public long dateTaken;
         public string filePath;
@@ -82,7 +82,7 @@ namespace HackathonBackend.src
 
     public struct BovineNotes
     {
-        public ulong bovineId;
+        public long bovineId;
 
         public int category;
         public long creation;

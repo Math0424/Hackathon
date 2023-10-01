@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -11,6 +12,7 @@ namespace HackathonBackend.src
 
     internal static class Utils
     {
+        public static SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("BovineFarmingIsForYouAndMe"));
 
         public static string GenerateSalt()
         {

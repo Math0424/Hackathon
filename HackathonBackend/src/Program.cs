@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -18,26 +19,6 @@ namespace HackathonBackend.src
 {
     internal class Program
     {
-        private static SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("BovineFarmingIsForYouAndMe"));
-
-        private static string GenerateUserToken(User user)
-        {
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                    {
-                        new Claim(ClaimTypes.Name, user.id.ToString())
-                    }),
-                Expires = DateTime.UtcNow.AddHours(5),
-                SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature)
-            };
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var securityToken = tokenHandler.CreateToken(tokenDescriptor);
-            var token = tokenHandler.WriteToken(securityToken);
-            return token;
-        }
-
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -45,7 +26,8 @@ namespace HackathonBackend.src
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddNewtonsoftJson();
+
             builder.Services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -57,7 +39,7 @@ namespace HackathonBackend.src
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = key,
+                    IssuerSigningKey = Utils.key,
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
@@ -71,22 +53,6 @@ namespace HackathonBackend.src
             app.UseAuthorization();
 
             app.MapControllers();
-
-            app.MapPost("/authenticate", async (User user) =>
-            {
-                var userDb = await Database.GetUser(user.username);
-                if (userDb == null)
-                {
-                    return Results.NotFound("User not found");
-                }
-
-                if (Utils.HashPassword(user.password, userDb.Value.salt).Equals(userDb.Value.encriptedPassword))
-                {
-                    return Results.Unauthorized();
-                }
-
-                return Results.Ok(GenerateUserToken(user));
-            });
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>

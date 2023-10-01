@@ -1,11 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "H1TDvRReIM2BDBRDTwSIW07Dt1zApHlELIbnLOcNpgVt5YSoResCl7gzDm7Foa81k05qemHZyaPOVfKsbj1gUg==",
+  "dgSpecHash": "uowXBmD/co+rz7oIler2J65RqYajk+WNbe8vgce7AQq1ICZRPAvBO+IpJ/Bw7PrM9762ai4DDFAbsA1IZJNh+Q==",
   "success": true,
   "projectFilePath": "C:\\Users\\Math0424\\Desktop\\Hackathon\\HackathonBackend\\HackathonBackend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Math0424\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",
     "C:\\Users\\Math0424\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.22\\microsoft.aspnetcore.authentication.jwtbearer.6.0.22.nupkg.sha512",
+    "C:\\Users\\Math0424\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\6.0.22\\microsoft.aspnetcore.jsonpatch.6.0.22.nupkg.sha512",
+    "C:\\Users\\Math0424\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\6.0.22\\microsoft.aspnetcore.mvc.newtonsoftjson.6.0.22.nupkg.sha512",
     "C:\\Users\\Math0424\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\Math0424\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\6.10.0\\microsoft.identitymodel.jsonwebtokens.6.10.0.nupkg.sha512",
     "C:\\Users\\Math0424\\.nuget\\packages\\microsoft.identitymodel.logging\\6.10.0\\microsoft.identitymodel.logging.6.10.0.nupkg.sha512",
@@ -16,6 +18,8 @@
     "C:\\Users\\Math0424\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
     "C:\\Users\\Math0424\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
     "C:\\Users\\Math0424\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
+    "C:\\Users\\Math0424\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\Math0424\\.nuget\\packages\\newtonsoft.json.bson\\1.0.2\\newtonsoft.json.bson.1.0.2.nupkg.sha512",
     "C:\\Users\\Math0424\\.nuget\\packages\\runtime.native.system.data.sqlclient.sni\\4.7.0\\runtime.native.system.data.sqlclient.sni.4.7.0.nupkg.sha512",
     "C:\\Users\\Math0424\\.nuget\\packages\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "C:\\Users\\Math0424\\.nuget\\packages\\runtime.win-x64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-x64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
