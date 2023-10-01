@@ -20,6 +20,24 @@ const loginValidates = async (user, pass) => {
 
     return response.json();
 }
+const createAccount = async (user, pass) => {
+    const response = await fetch('http://173.215.25.174:5000/user/create', {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        redirect: "follow",
+        referrerPolicy: "no-referrer",
+        body: JSON.stringify({
+            username: user,
+            password: pass
+        })
+    });
+        console.log(response);
+    return response;
+}
 
 const Login = () => {
     const [username, setusername] = useState("");
@@ -34,6 +52,15 @@ const Login = () => {
             navigate('/cowview');
         }
     };
+     const handleSubmit2 = async () => {
+            const response1 = await createAccount(username, password)
+            console.log(response1);
+            const response = await loginValidates(username, password)
+            if (response[0] !== undefined) {
+                Cookies.set('userId', response[0])
+                navigate('/Cow');
+            }
+        };
 
     return (
         <div>
@@ -52,7 +79,7 @@ const Login = () => {
                 type="password"
             />
             <input type="submit" onClick={handleSubmit} value="Submit" />
-            <input type="button" value="Create Account" />
+            <input type="button" onClick={handleSubmit2} value="Create Account" />
         </div>
     )
 }
