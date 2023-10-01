@@ -1,0 +1,23 @@
+.list {
+  p {
+    height: 16px;
+
+    span {
+      float: left;
+    }
+
+    input {
+      float: right;
+      margin: 0;
+      padding: 0 0 0 16px;
+      width: 66%;
+    }
+
+    input[type="checkbox"] {
+      float: right;
+      margin: 0;
+      padding: 0 0 0 16px;
+      width: auto;
+    }
+  }
+}
