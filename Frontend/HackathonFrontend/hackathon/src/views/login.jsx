@@ -31,7 +31,7 @@ const Login = () => {
         if (response[0] !== undefined) {
             Cookies.set('userId', response[0])
 
-            navigate('/Cow');
+            navigate('/cowview');
         }
     };
 
