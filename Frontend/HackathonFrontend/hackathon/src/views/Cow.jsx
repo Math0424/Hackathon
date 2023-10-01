@@ -24,7 +24,7 @@ const [error, setError] = useState(null);
         };
 
         // Send POST request
-        fetch('http://173.215.25.174:5000/bovine/create', {
+        fetch('http://localhost:5000/bovine/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

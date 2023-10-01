@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
 
 const getAllCows = async () => {
-    const response = await fetch('http://173.215.25.174:5000/bovine/getall', {
+    const response = await fetch('http://localhost:5000/bovine/getall', {
         method: "GET",
         mode: "cors",
         cache: "no-cache",

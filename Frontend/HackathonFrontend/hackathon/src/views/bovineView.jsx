@@ -7,7 +7,7 @@ import QRCode from "react-qr-code";
 const useQuery = () => new URLSearchParams(useLocation().search);
 
 const getCowById = async (id) => {
-  const response = await fetch(`http://173.215.25.174:5000/bovine/get?id=${id}`, {
+  const response = await fetch(`http://localhost:5000/bovine/get?id=${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -40,7 +40,7 @@ const BovineView = () => {
           <div>Cull: {data.cull}</div>
           <div>Culled: {data.culled ? 'Yes' : 'No'}</div>
           <div>Castrated: {data.castrated ? 'Yes' : 'No'}</div>
-          <div><QRCode value={`http://173.215.25.174:5000/bowvineView/id=${id}`}   size={150}
+          <div><QRCode value={`http://localhost:5000/bowvineView/id=${id}`}   size={150}
                                                                                       style={{ height: "auto", maxWidth: "100%", width: "100%" }}
 
                                                                                       viewBox={`0 0 256 256`}/></div>

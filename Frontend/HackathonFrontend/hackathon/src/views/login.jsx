@@ -3,7 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import Cookies from 'js-cookie';
 
 const loginValidates = async (user, pass) => {
-    const response = await fetch('http://173.215.25.174:5000/user/auth', {
+    const response = await fetch('http://localhost:5000/user/auth', {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -21,7 +21,7 @@ const loginValidates = async (user, pass) => {
     return response.json();
 }
 const createAccount = async (user, pass) => {
-    const response = await fetch('http://173.215.25.174:5000/user/create', {
+    const response = await fetch('http://localhost:5000/user/create', {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
