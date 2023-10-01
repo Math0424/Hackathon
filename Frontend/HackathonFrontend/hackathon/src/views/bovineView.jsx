@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import styles from './bovineView.module.scss'
 
 const useQuery = () => new URLSearchParams(useLocation().search);
 
@@ -27,7 +28,7 @@ const BovineView = () => {
   }, [id]);
 
   return (
-    <div>
+    <div className={styles.list}>
       {data && (
         <>
           <div>ID: {data.id}</div>
