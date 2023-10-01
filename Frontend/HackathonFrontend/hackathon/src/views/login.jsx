@@ -3,7 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import Cookies from 'js-cookie';
 
 const loginValidates = async (user, pass) => {
-    const response = await fetch('http://balls/autheticate', {
+    const response = await fetch('http://localhost:5000/user/auth', {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -28,9 +28,9 @@ const Login = () => {
     const [username, setusername] = useState("");
     const [password, setpassword] = useState("");
     const navigate = useNavigate();
-    const handleSubmit = (e) => {
-        const response = loginValidates(username, password)
-        if(response.id !== undefined) {
+    const handleSubmit = async () => {
+        const response = await loginValidates(username, password)
+        if (response.id !== undefined) {
             Cookies.set('userId', response.id)
 
             navigate('/Cow');
@@ -40,7 +40,6 @@ const Login = () => {
     return (
         <div>
             <h1>Please log in</h1>
-            <form onSubmit={handleSubmit}>
                 <input
                     onChange={(e) => setusername(e.target.value)}
                     placeholder={'Username'}
@@ -54,9 +53,8 @@ const Login = () => {
                     placeholder={'Password'}
                     type="password"
                 />
-                <input type="submit" value="Submit" />
+                <input type="submit" onClick={handleSubmit} value="Submit" />
                 <input type="button" value="Create Account" />
-            </form>
         </div>
     )
 }
