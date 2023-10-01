@@ -22,7 +22,7 @@ namespace HackathonBackend.src
         }
 
         [Authorize]
-        [HttpGet("getallbovine")]
+        [HttpGet("getall")]
         public async Task<IActionResult> GetAllBovine()
         {
             long userId = 0;
@@ -33,7 +33,7 @@ namespace HackathonBackend.src
         }
 
         [Authorize]
-        [HttpGet("getbovine")]
+        [HttpGet("get")]
         public async Task<IActionResult> GetBovine([FromQuery] long id)
         {
             long userId = 0;
@@ -50,7 +50,7 @@ namespace HackathonBackend.src
         }
 
         [Authorize]
-        [HttpGet("bovinenotes")]
+        [HttpGet("notes")]
         public async Task<IActionResult> GetBovineNotes([FromQuery] long id)
         {
             long userId = 0;
@@ -67,7 +67,7 @@ namespace HackathonBackend.src
         }
 
         [Authorize]
-        [HttpGet("bovinephotos")]
+        [HttpGet("photos")]
         public async Task<IActionResult> GetBovinePhotos([FromQuery] long id)
         {
             long userId = 0;
@@ -84,7 +84,7 @@ namespace HackathonBackend.src
         }
 
         [Authorize]
-        [HttpGet("bovineweights")]
+        [HttpGet("weights")]
         public async Task<IActionResult> GetBovineWeights([FromQuery] long id)
         {
             long userId = 0;
@@ -101,7 +101,7 @@ namespace HackathonBackend.src
         }
 
         [Authorize]
-        [HttpGet("bovineconception")]
+        [HttpGet("conception")]
         public async Task<IActionResult> GetBovineConception([FromQuery] long id)
         {
             long userId = 0;
@@ -118,7 +118,7 @@ namespace HackathonBackend.src
         }
 
         [Authorize]
-        [HttpGet("bovinechildren")]
+        [HttpGet("children")]
         public async Task<IActionResult> GetBovineChildren([FromQuery] long id)
         {
             long userId = 0;
