@@ -29,7 +29,7 @@ namespace HackathonBackend.src
             if (!GetUser(ref userId))
                 return BadRequest("Invalid Token");
 
-            return Ok();
+            return Ok(await Database.GetUserBovineDetails(userId));
         }
 
         [Authorize]
@@ -40,7 +40,13 @@ namespace HackathonBackend.src
             if (!GetUser(ref userId))
                 return BadRequest("Invalid Token");
 
-            return Ok();
+            if (!await Database.HasBovine(id))
+                return BadRequest("Cannot find bovine");
+            var bovine = await Database.GetBovine(id);
+            if (bovine.Value.ownerId != userId)
+                return BadRequest("Not the owner");
+
+            return Ok(bovine);
         }
 
         [Authorize]
@@ -51,7 +57,13 @@ namespace HackathonBackend.src
             if (!GetUser(ref userId))
                 return BadRequest("Invalid Token");
 
-            return Ok();
+            if (!await Database.HasBovine(id))
+                return BadRequest("Cannot find bovine");
+            var bovine = await Database.GetBovine(id);
+            if (bovine.Value.ownerId != userId)
+                return BadRequest("Not the owner");
+
+            return Ok(await Database.GetBovineNotes(id));
         }
 
         [Authorize]
@@ -62,7 +74,13 @@ namespace HackathonBackend.src
             if (!GetUser(ref userId))
                 return BadRequest("Invalid Token");
 
-            return Ok();
+            if (!await Database.HasBovine(id))
+                return BadRequest("Cannot find bovine");
+            var bovine = await Database.GetBovine(id);
+            if (bovine.Value.ownerId != userId)
+                return BadRequest("Not the owner");
+
+            return Ok(await Database.GetBovinePhotos(id));
         }
 
         [Authorize]
@@ -73,7 +91,13 @@ namespace HackathonBackend.src
             if (!GetUser(ref userId))
                 return BadRequest("Invalid Token");
 
-            return Ok();
+            if (!await Database.HasBovine(id))
+                return BadRequest("Cannot find bovine");
+            var bovine = await Database.GetBovine(id);
+            if (bovine.Value.ownerId != userId)
+                return BadRequest("Not the owner");
+
+            return Ok(await Database.GetBovineWeights(id));
         }
 
         [Authorize]
@@ -84,7 +108,13 @@ namespace HackathonBackend.src
             if (!GetUser(ref userId))
                 return BadRequest("Invalid Token");
 
-            return Ok();
+            if (!await Database.HasBovine(id))
+                return BadRequest("Cannot find bovine");
+            var bovine = await Database.GetBovine(id);
+            if (bovine.Value.ownerId != userId)
+                return BadRequest("Not the owner");
+
+            return Ok(await Database.GetBovineConception(id));
         }
 
         [Authorize]
@@ -95,7 +125,13 @@ namespace HackathonBackend.src
             if (!GetUser(ref userId))
                 return BadRequest("Invalid Token");
 
-            return Ok();
+            if (!await Database.HasBovine(id))
+                return BadRequest("Cannot find bovine");
+            var bovine = await Database.GetBovine(id);
+            if (bovine.Value.ownerId != userId)
+                return BadRequest("Not the owner");
+
+            return Ok(await Database.GetBovineChildren(id));
         }
 
     }

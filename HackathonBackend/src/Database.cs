@@ -255,6 +255,15 @@ namespace HackathonBackend.src
             return bovines;
         }
 
+        public async static Task<bool> HasBovine(long id)
+        {
+            string sql = $"SELECT COUNT(*) FROM Bovine WHERE id = {id}";
+            using (var command = new SQLiteCommand(sql, connection))
+            {
+                return Convert.ToInt32(await command.ExecuteScalarAsync()) > 0;
+            }
+        }
+
         public async static Task<Bovine?> GetBovine(long id)
         {
             string sql = $"SELECT * FROM Bovine WHERE id = {id}";
