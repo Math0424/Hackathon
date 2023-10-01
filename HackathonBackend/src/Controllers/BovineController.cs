@@ -50,6 +50,53 @@ namespace HackathonBackend.src
         }
 
         [Authorize]
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateBovine(Bovine bovine)
+        {
+            long userId = 0;
+            if (!GetUser(ref userId))
+                return BadRequest("Invalid Token");
+            
+            return Ok(new long[] { await Database.CreateCow(userId, bovine) });
+        }
+
+        [Authorize]
+        [HttpPost("notes")]
+        public async Task<IActionResult> CreateBovineNotes(BovineNotes note)
+        {
+            long userId = 0;
+            if (!GetUser(ref userId))
+                return BadRequest("Invalid Token");
+
+            if (!await Database.HasBovine(note.bovineId))
+                return BadRequest("Cannot find bovine");
+            var bovine = await Database.GetBovine(note.bovineId);
+            if (bovine.Value.ownerId != userId)
+                return BadRequest("Not the owner");
+
+            await Database.CreateNote(note);
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpDelete("notes")]
+        public async Task<IActionResult> DeleteBovineNotes(BovineNotes note)
+        {
+            long userId = 0;
+            if (!GetUser(ref userId))
+                return BadRequest("Invalid Token");
+
+            if (!await Database.HasBovine(note.bovineId))
+                return BadRequest("Cannot find bovine");
+            var bovine = await Database.GetBovine(note.bovineId);
+            if (bovine.Value.ownerId != userId)
+                return BadRequest("Not the owner");
+
+            await Database.DeleteNote(note);
+            return Ok();
+        }
+
+        [Authorize]
         [HttpGet("notes")]
         public async Task<IActionResult> GetBovineNotes([FromQuery] long id)
         {
@@ -98,6 +145,24 @@ namespace HackathonBackend.src
                 return BadRequest("Not the owner");
 
             return Ok(await Database.GetBovineWeights(id));
+        }
+
+        [Authorize]
+        [HttpPost("weights")]
+        public async Task<IActionResult> AddBovineWeights(BovineWeight weight)
+        {
+            long userId = 0;
+            if (!GetUser(ref userId))
+                return BadRequest("Invalid Token");
+
+            if (!await Database.HasBovine(weight.bovineId))
+                return BadRequest("Cannot find bovine");
+            var bovine = await Database.GetBovine(weight.bovineId);
+            if (bovine.Value.ownerId != userId)
+                return BadRequest("Not the owner");
+
+            await Database.AddWeight(weight);
+            return Ok();
         }
 
         [Authorize]

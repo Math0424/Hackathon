@@ -50,7 +50,7 @@ namespace HackathonBackend.src
                 return Unauthorized();
             }
 
-            return Ok(GenerateUserToken(user));
+            return Ok($"[\"{GenerateUserToken(user)}\"]");
         }
 
         [HttpPost("create")]

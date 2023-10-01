@@ -106,8 +106,19 @@ namespace HackathonBackend.src
 
             return sql;
         }
-        
-        //SQL setters
+
+        // SQL deletes
+        public async static Task DeleteNote(BovineNotes note)
+        {
+            note.creation = DateTime.Now.Ticks;
+            using (var command = new SQLiteCommand(connection))
+            {
+                command.CommandText = $"DELETE FROM BovineNotes WHERE bovineId = {note.bovineId} AND creation = {note.creation};";
+                await command.ExecuteNonQueryAsync();
+            }
+        }
+
+        // SQL setters
         public async static Task<long> CreateCow(long ownerId, Bovine bovine)
         {
             long uniqueId = BitConverter.ToInt64(Guid.NewGuid().ToByteArray(), 0);
