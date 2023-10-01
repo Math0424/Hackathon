@@ -15,7 +15,7 @@ namespace HackathonBackend.src
 
         static Database()
         {
-            databaseLocation = databaseLocation.Replace("%appdata%", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
+            databaseLocation = databaseLocation.Replace("%appdata%", Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
 
             if (!File.Exists(databaseLocation))
             {
@@ -45,9 +45,6 @@ namespace HackathonBackend.src
                     registered INTEGER,
                     name TEXT,
                     male BOOLEAN,
-                    father INTEGER,
-                    mother INTEGER,
-                    birth INTEGER,
                     death INTEGER,
                     cull BOOLEAN,
                     culled BOOLEAN,
@@ -290,9 +287,6 @@ namespace HackathonBackend.src
                             ownerId = (long)reader["ownerId"],
                             name = reader["name"].ToString(),
                             male = (bool)reader["male"],
-                            father = (long)reader["father"],
-                            mother = (long)reader["mother"],
-                            birth = (long)reader["birth"],
                             death = (long)reader["death"],
                             cull = (bool)reader["cull"],
                             culled = (bool)reader["culled"],

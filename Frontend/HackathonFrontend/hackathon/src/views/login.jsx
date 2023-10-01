@@ -58,7 +58,7 @@ const Login = () => {
             const response = await loginValidates(username, password)
             if (response[0] !== undefined) {
                 Cookies.set('userId', response[0])
-                navigate('/Cow');
+                navigate('/cowview');
             }
         };
 

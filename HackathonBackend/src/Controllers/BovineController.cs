@@ -17,7 +17,8 @@ namespace HackathonBackend.src
         [NonAction]
         public bool GetUser(ref long id)
         {
-            var idString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var idString = User.FindFirst(ClaimTypes.Name)?.Value;
+            Console.WriteLine("UserId with value " + idString);
             return long.TryParse(idString, out id);
         }
 

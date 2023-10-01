@@ -40,10 +40,6 @@ namespace HackathonBackend.src
         public string name;
         public bool male;
 
-        public long father;
-        public long mother;
-
-        public long birth;
         public long death;
 
         public bool cull;
