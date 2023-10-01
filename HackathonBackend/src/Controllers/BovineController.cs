@@ -10,23 +10,93 @@ using System.Threading.Tasks;
 namespace HackathonBackend.src
 {
     [ApiController]
-    [Route("Bovine")]
-    internal class BovineController : ControllerBase
+    [Route("bovine")]
+    public class BovineController : ControllerBase
     {
     
-        [Authorize]
-        [HttpGet("userbovineids")]
-        public async Task<IActionResult> GetUserBovineIds()
+        [NonAction]
+        public bool GetUser(ref long id)
         {
             var idString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (long.TryParse(idString, out long id))
-            {
-                //var result = await GetUserBovineIds(id); // Assume this method is implemented
-                return Ok();// result);
-            }
-            return BadRequest("Invalid user ID in claims");
+            return long.TryParse(idString, out id);
         }
-    
-    
+
+        [Authorize]
+        [HttpGet("getallbovine")]
+        public async Task<IActionResult> GetAllBovine()
+        {
+            long userId = 0;
+            if (!GetUser(ref userId))
+                return BadRequest("Invalid Token");
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpGet("getbovine")]
+        public async Task<IActionResult> GetBovine([FromQuery] long id)
+        {
+            long userId = 0;
+            if (!GetUser(ref userId))
+                return BadRequest("Invalid Token");
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpGet("bovinenotes")]
+        public async Task<IActionResult> GetBovineNotes([FromQuery] long id)
+        {
+            long userId = 0;
+            if (!GetUser(ref userId))
+                return BadRequest("Invalid Token");
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpGet("bovinephotos")]
+        public async Task<IActionResult> GetBovinePhotos([FromQuery] long id)
+        {
+            long userId = 0;
+            if (!GetUser(ref userId))
+                return BadRequest("Invalid Token");
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpGet("bovineweights")]
+        public async Task<IActionResult> GetBovineWeights([FromQuery] long id)
+        {
+            long userId = 0;
+            if (!GetUser(ref userId))
+                return BadRequest("Invalid Token");
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpGet("bovineconception")]
+        public async Task<IActionResult> GetBovineConception([FromQuery] long id)
+        {
+            long userId = 0;
+            if (!GetUser(ref userId))
+                return BadRequest("Invalid Token");
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpGet("bovinechildren")]
+        public async Task<IActionResult> GetBovineChildren([FromQuery] long id)
+        {
+            long userId = 0;
+            if (!GetUser(ref userId))
+                return BadRequest("Invalid Token");
+
+            return Ok();
+        }
+
     }
 }

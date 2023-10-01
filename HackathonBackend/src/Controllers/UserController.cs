@@ -36,7 +36,7 @@ namespace HackathonBackend.src
             return token;
         }
 
-        [HttpPost("authenticate")]
+        [HttpPost("auth")]
         public async Task<IActionResult> Authenticate(User user)
         {
             var userDb = await Database.GetUser(user.username);
@@ -54,7 +54,7 @@ namespace HackathonBackend.src
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateUser(User user)
+        public async Task<IActionResult> Create(User user)
         {
             if (await Database.HasUser(user.username))
             {
@@ -71,7 +71,7 @@ namespace HackathonBackend.src
         }
 
         [HttpGet("all")]
-        public async Task<IActionResult> GetUsers()
+        public async Task<IActionResult> All()
         {
             Console.WriteLine("Get all users");
             return Ok(await Database.GetUsers());
