@@ -36,7 +36,11 @@ const CowView = () => {
           {
             data.map((item) => (
               <li key={item.id}>
-                {`ID: ${item.id}, Name: ${item.name}, Gender: ${item.male}`}
+                {`ID: ${item.id}, Name: ${item.name}, Gender: ${item.male ? "male" : "female"}`}
+                <br />
+                <Link to={`/bovineView?id=${item.id}`}>
+                    <button>View Details</button>
+                </Link>
               </li>
             ))
           }

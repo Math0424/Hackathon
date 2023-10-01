@@ -4,11 +4,10 @@ import { useNavigate } from 'react-router-dom';
 
 const Cow = () => {
 const [name, setname] = useState("");
-const [gender, setgender] = useState("");
-const [died, setdied] = useState("");
-const [cull, setcull] = useState("");
-const [culled, setculled] = useState("");
-const [casterated, setcastereated] = useState("");
+const [gender, setGender] = useState(false);
+const [cull, setCull] = useState(false);
+const [culled, setCulled] = useState(false);
+const [castrated, setCastrated] = useState(false);
 const [error, setError] = useState(null);
 
 const navigate = useNavigate();
@@ -17,11 +16,10 @@ const handleSubmit = (e) => {
       // Create the new cow object
       const newCow = {
         name,
-        male: gender === "true",
-        died,
-        cull: cull === "true",
-        culled: culled === "true",
-        casterated: casterated === "true",
+        male: gender, 
+        cull, 
+        culled, 
+        castrated, 
       };
   
       // Send POST request
@@ -60,43 +58,35 @@ const handleSubmit = (e) => {
                 />
             </p>
             <p> Gender: (Male)
-                <input
-                    type="checkbox"
-                    name="gender"
-                    checked={gender === "male"}
-                    onChange={() => setgender(gender === "male" ? "female" : "male")}
-                />
-            </p>
-            <p> Died: (d/t)
-                    <input
-                       type="text"
-                       name="died"
-                       value={died}
-                        onChange={(e) => setdied(e.target.value)}
-                       />
+            <input
+              type="checkbox"
+              name="gender"
+              checked={gender}
+              onChange={() => setGender(!gender)}
+            />
             </p>
             <p> ToCull:
             <input
-                type="checkbox"
-                name="cull"
-                checked={cull === "true"}
-                onChange={() => setcull(cull === "true" ? "false" : "true")}
+              type="checkbox"
+              name="cull"
+              checked={cull}
+              onChange={() => setCull(!cull)}
             />
             </p>
             <p> Culled:
             <input
-                type="checkbox"
-                name="culled"
-                checked={culled === "true"}
-                onChange={() => setculled(culled === "true" ? "false" : "true")}
+              type="checkbox"
+              name="culled"
+              checked={culled}
+              onChange={() => setCulled(!culled)}
             />
             </p>
             <p> Castrated:
             <input
-                type="checkbox"
-                name="casterated"
-                checked={casterated === "true"}
-                onChange={() => setcastereated(casterated === "true" ? "false" : "true")}
+              type="checkbox"
+              name="castrated"
+              checked={castrated}
+              onChange={() => setCastrated(!castrated)}
             />
             </p>
             <button type="submit">Create</button>

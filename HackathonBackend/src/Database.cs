@@ -118,7 +118,7 @@ namespace HackathonBackend.src
         // SQL setters
         public async static Task<long> CreateCow(long ownerId, Bovine bovine)
         {
-            long uniqueId = BitConverter.ToInt64(Guid.NewGuid().ToByteArray(), 0);
+            long uniqueId = BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0);
             uniqueId = uniqueId < 0 ? uniqueId * -1 : uniqueId;
 
             bovine.registered = DateTime.Now.Ticks;
@@ -154,7 +154,7 @@ namespace HackathonBackend.src
 
         public async static Task CreateUser(User user)
         {
-            long uniqueId = BitConverter.ToInt64(Guid.NewGuid().ToByteArray(), 0);
+            long uniqueId = BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0);
             uniqueId = uniqueId < 0 ? uniqueId * -1 : uniqueId;
 
             user.id = uniqueId;
