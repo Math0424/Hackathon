@@ -64,6 +64,7 @@ const Login = () => {
 
     return (
         <div>
+            <h2>Cow Smart</h2>
             <h1>Please log in</h1>
             <input
                 onChange={(e) => setusername(e.target.value)}
