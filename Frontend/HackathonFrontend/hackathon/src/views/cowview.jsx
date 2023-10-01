@@ -41,6 +41,7 @@ const CowView = () => {
                 <Link to={`/bovineView?id=${item.id}`}>
                     <button>View Details</button>
                 </Link>
+
               </li>
             ))
           }

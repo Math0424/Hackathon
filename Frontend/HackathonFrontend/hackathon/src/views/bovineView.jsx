@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import styles from './bovineView.module.scss'
-
+import ReactDOM from "react-dom";
+import QRCode from "react-qr-code";
 const useQuery = () => new URLSearchParams(useLocation().search);
 
 const getCowById = async (id) => {
@@ -39,8 +40,13 @@ const BovineView = () => {
           <div>Cull: {data.cull}</div>
           <div>Culled: {data.culled ? 'Yes' : 'No'}</div>
           <div>Castrated: {data.castrated ? 'Yes' : 'No'}</div>
+          <div><QRCode value={`http://173.215.25.174:5000/bowvineView/id=${id}`}   size={150}
+                                                                                      style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+
+                                                                                      viewBox={`0 0 256 256`}/></div>
         </>
       )}
+
     </div>
   );
 };
