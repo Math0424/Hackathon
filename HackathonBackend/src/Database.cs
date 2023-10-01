@@ -4,7 +4,6 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static HackathonBackend.src.Structs;
 
 namespace HackathonBackend.src
 {
@@ -20,8 +19,11 @@ namespace HackathonBackend.src
 
             if (!File.Exists(databaseLocation))
             {
+                Directory.CreateDirectory(Path.GetDirectoryName(databaseLocation));
                 SQLiteConnection.CreateFile(databaseLocation);
             }
+
+            Console.WriteLine($"Database located at {databaseLocation}");
 
             connection = new SQLiteConnection($"Data Source={databaseLocation};Version=3;");
             connection.Open();
@@ -94,21 +96,23 @@ namespace HackathonBackend.src
 
         private static string GenerateInsertStatement(object obj, SQLiteCommand cmd, string table)
         {
-            var properties = obj.GetType().GetProperties().Where(p => p.GetCustomAttributes(true).Count(e => e.GetType() == typeof(SQLIgnore)) == 0);
-            var fieldNames = properties.Select(p => p.Name).ToArray();
-            var paramNames = properties.Select(p => "@" + p.Name).ToArray();
+            var fields = obj.GetType().GetFields().Where(f => f.GetCustomAttributes(true).Count(e => e.GetType() == typeof(SQLIgnore)) == 0);
+            var fieldNames = fields.Select(f => f.Name).ToArray();
+            var paramNames = fields.Select(f => "@" + f.Name).ToArray();
             string sql = $"INSERT INTO {table} ({string.Join(", ", fieldNames)}) VALUES ({string.Join(", ", paramNames)})";
 
-            foreach (var p in properties)
-                cmd.Parameters.AddWithValue("@" + p.Name, p.GetValue(obj));
+            foreach (var f in fields)
+                cmd.Parameters.AddWithValue("@" + f.Name, f.GetValue(obj));
 
             return sql;
         }
         
         //SQL setters
-        public async static Task<ulong> CreateCow(ulong ownerId, Bovine bovine)
+        public async static Task<long> CreateCow(long ownerId, Bovine bovine)
         {
-            ulong uniqueId = BitConverter.ToUInt64(Guid.NewGuid().ToByteArray(), 0);
+            long uniqueId = BitConverter.ToInt64(Guid.NewGuid().ToByteArray(), 0);
+            uniqueId = uniqueId < 0 ? uniqueId * -1 : uniqueId;
+
             bovine.registered = DateTime.Now.Ticks;
             bovine.id = uniqueId;
             bovine.ownerId = ownerId;
@@ -140,10 +144,36 @@ namespace HackathonBackend.src
             }
         }
 
+        public async static Task CreateUser(User user)
+        {
+            long uniqueId = BitConverter.ToInt64(Guid.NewGuid().ToByteArray(), 0);
+            uniqueId = uniqueId < 0 ? uniqueId * -1 : uniqueId;
+
+            user.id = uniqueId;
+            user.lastLogin = DateTime.Now.Ticks;
+            user.salt = Utils.GenerateSalt();
+            user.encriptedPassword = Utils.HashPassword(user.password, user.salt);
+            using (var command = new SQLiteCommand(connection))
+            {
+                command.CommandText = GenerateInsertStatement(user, command, "User");
+                Console.WriteLine(GenerateInsertStatement(user, command, "User"));
+                await command.ExecuteNonQueryAsync();
+            }
+        }
+
         // SQL getters
+        public async static Task<bool> HasUser(string username)
+        {
+            string sql = $"SELECT COUNT(*) FROM User WHERE username COLLATE NOCASE = \"{username}\"";
+            using (var command = new SQLiteCommand(sql, connection))
+            {
+                return Convert.ToInt32(await command.ExecuteScalarAsync()) > 0;
+            }
+        }
+
         public async static Task<User?> GetUser(string username)
         {
-            string sql = $"SELECT * FROM User WHERE username = {username}";
+            string sql = $"SELECT * FROM User WHERE username COLLATE NOCASE = \"{username}\"";
             using (var command = new SQLiteCommand(sql, connection))
             {
                 using (var reader = await command.ExecuteReaderAsync())
@@ -152,7 +182,7 @@ namespace HackathonBackend.src
                     {
                         User user = new User
                         {
-                            id = (ulong)reader["id"],
+                            id = (long)reader["id"],
                             username = reader["username"].ToString(),
                             encriptedPassword = reader["encriptedPassword"].ToString(),
                             salt = reader["salt"].ToString(),
@@ -165,9 +195,26 @@ namespace HackathonBackend.src
             return null;
         }
 
-        public async static Task<List<ulong>> GetUserBovineIds(ulong id)
+        public async static Task<List<long>> GetUsers()
         {
-            List<ulong> bovineIds = new List<ulong>();
+            string sql = $"SELECT id FROM User";
+            List<long> users = new List<long>();
+            using (var command = new SQLiteCommand(sql, connection))
+            {
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    while (reader.Read())
+                    {
+                        users.Add(reader.GetInt64(0));
+                    }
+                }
+            }
+            return users;
+        }
+
+        public async static Task<List<long>> GetUserBovineIds(long id)
+        {
+            List<long> bovineIds = new List<long>();
 
             string sql = $"SELECT id FROM Bovine WHERE ownerId = {id}";
             using (var command = new SQLiteCommand(sql, connection))
@@ -176,7 +223,7 @@ namespace HackathonBackend.src
                 {
                     while (reader.Read())
                     {
-                        bovineIds.Add((ulong)reader["id"]);
+                        bovineIds.Add((long)reader["id"]);
                     }
                 }
             }
@@ -184,7 +231,7 @@ namespace HackathonBackend.src
             return bovineIds;
         }
 
-        public async static Task<List<Bovine>> GetUserBovineDetails(ulong id)
+        public async static Task<List<Bovine>> GetUserBovineDetails(long id)
         {
             List<Bovine> bovines = new List<Bovine>();
 
@@ -197,7 +244,7 @@ namespace HackathonBackend.src
                     {
                         Bovine bovine = new Bovine
                         {
-                            id = (ulong)reader["id"],
+                            id = (long)reader["id"],
                             name = reader["name"].ToString(),
                             male = (bool)reader["male"]
                         };
@@ -208,9 +255,8 @@ namespace HackathonBackend.src
             return bovines;
         }
 
-        public async static Task<Bovine?> GetBovine(ulong id)
+        public async static Task<Bovine?> GetBovine(long id)
         {
-            Bovine bovine;
             string sql = $"SELECT * FROM Bovine WHERE id = {id}";
             using (var command = new SQLiteCommand(sql, connection))
             {
@@ -218,24 +264,27 @@ namespace HackathonBackend.src
                 {
                     while (reader.Read())
                     {
-                        bovine.id = (ulong)reader["id"];
-                        bovine.ownerId = (ulong)reader["ownerId"];
-                        bovine.name = reader["name"].ToString();
-                        bovine.male = (bool)reader["male"];
-                        bovine.father = (ulong)reader["father"];
-                        bovine.mother = (ulong)reader["mother"];
-                        bovine.birth = (long)reader["birth"];
-                        bovine.death = (long)reader["death"];
-                        bovine.cull = (bool)reader["cull"];
-                        bovine.culled = (bool)reader["culled"];
-                        bovine.casterated = (bool)reader["casterated"];
+                        return new Bovine()
+                        {
+                            id = (long)reader["id"],
+                            ownerId = (long)reader["ownerId"],
+                            name = reader["name"].ToString(),
+                            male = (bool)reader["male"],
+                            father = (long)reader["father"],
+                            mother = (long)reader["mother"],
+                            birth = (long)reader["birth"],
+                            death = (long)reader["death"],
+                            cull = (bool)reader["cull"],
+                            culled = (bool)reader["culled"],
+                            casterated = (bool)reader["casterated"]
+                        };
                     }
                 }
             }
             return null;
         }
 
-        public async static Task<List<BovineNotes>> GetBovineNotes(ulong id)
+        public async static Task<List<BovineNotes>> GetBovineNotes(long id)
         {
             List<BovineNotes> notes = new List<BovineNotes>();
 
@@ -248,7 +297,7 @@ namespace HackathonBackend.src
                     {
                         BovineNotes note = new BovineNotes
                         {
-                            bovineId = (ulong)reader["bovineId"],
+                            bovineId = (long)reader["bovineId"],
                             category = (int)reader["category"],
                             creation = (long)reader["creation"],
                             title = reader["title"].ToString(),
@@ -261,7 +310,7 @@ namespace HackathonBackend.src
             return notes;
         }
 
-        public async static Task<List<BovinePhotos>> GetBovinePhotos(ulong id)
+        public async static Task<List<BovinePhotos>> GetBovinePhotos(long id)
         {
             List<BovinePhotos> photos = new List<BovinePhotos>();
 
@@ -274,7 +323,7 @@ namespace HackathonBackend.src
                     {
                         BovinePhotos photo = new BovinePhotos
                         {
-                            bovineId = (ulong)reader["bovineId"],
+                            bovineId = (long)reader["bovineId"],
                             dateTaken = (long)reader["dateTaken"],
                             filePath = reader["filePath"].ToString()
                         };
@@ -285,7 +334,7 @@ namespace HackathonBackend.src
             return photos;
         }
 
-        public async static Task<List<BovineWeight>> GetBovineWeights(ulong id)
+        public async static Task<List<BovineWeight>> GetBovineWeights(long id)
         {
             List<BovineWeight> weights = new List<BovineWeight>();
 
@@ -298,7 +347,7 @@ namespace HackathonBackend.src
                     {
                         BovineWeight weight = new BovineWeight
                         {
-                            bovineId = (ulong)reader["bovineId"],
+                            bovineId = (long)reader["bovineId"],
                             date = (long)reader["date"],
                             weight = (float)reader["weight"]
                         };
@@ -309,7 +358,7 @@ namespace HackathonBackend.src
             return weights;
         }
 
-        public async static Task<BreedingHistory> GetBovineConception(ulong id)
+        public async static Task<BreedingHistory> GetBovineConception(long id)
         {
             BreedingHistory conception = new BreedingHistory();
 
@@ -320,19 +369,19 @@ namespace HackathonBackend.src
                 {
                     if (reader.Read())
                     {
-                        conception.bovineId = (ulong)reader["bovineId"];
+                        conception.bovineId = (long)reader["bovineId"];
                         conception.inseminationDate =(long)reader["inseminationDate"];
                         conception.birthedDate = (long)reader["birthedDate"];
                         conception.stillborn = (bool)reader["stillborn"];
-                        conception.cow = (ulong)reader["cow"];
-                        conception.bull = (ulong)reader["bull"];
+                        conception.cow = (long)reader["cow"];
+                        conception.bull = (long)reader["bull"];
                     }
                 }
             }
             return conception;
         }
 
-        public async static Task<List<BreedingHistory>> GetBovineChildren(ulong id)
+        public async static Task<List<BreedingHistory>> GetBovineChildren(long id)
         {
             List<BreedingHistory> births = new List<BreedingHistory>();
 
@@ -345,12 +394,12 @@ namespace HackathonBackend.src
                     {
                         BreedingHistory birth = new BreedingHistory
                         {
-                            bovineId = (ulong)reader["bovineId"],
+                            bovineId = (long)reader["bovineId"],
                             inseminationDate = (long)reader["inseminationDate"],
                             birthedDate = (long)reader["birthedDate"],
                             stillborn = (bool)reader["stillborn"],
-                            cow = (ulong)reader["cow"],
-                            bull = (ulong)reader["bull"]
+                            cow = (long)reader["cow"],
+                            bull = (long)reader["bull"]
                         };
                         births.Add(birth);
                     }
